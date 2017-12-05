@@ -14,7 +14,7 @@
 	DomainController: "DC001.lab.local",
 	DesktopCollectionName: "RDS Lab",
 	DesktopDiscription: "Test Deployment with PowerShell",
-	ProfileDiskPath: "\\\\DC001\\Profiles$",
+	ProfileDiskPath: "\\\\DC001\\RDSFarm1$",
 	RDSAccessGroup: "SG_RDP_Internal_Access@lab.local",
 	GatewayAccessGroup: "SG_RDP_External_Access@lab.local",
 	CertPath: "C:\\rds\\Wildcard_Flashmob.pfx",
