@@ -1,6 +1,6 @@
 <#
 DESCRIPTION   This script will create a configured Remote Desktop Session Farm.
-Author:         Julian Mooren
+Author:         Julian Mooren | https://citrixguyblog.com
 Creation Date:  12.05.17
 #>
  
