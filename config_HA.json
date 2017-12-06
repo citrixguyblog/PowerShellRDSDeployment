@@ -19,7 +19,6 @@
 	GatewayAccessGroup: "SG_RDP_External_Access@lab.local",
 	CertPath: "C:\\rds\\Wildcard_Flashmob.pfx",
 	CertPassword: "Password",
-	WebAccessFQDN: "https://remoteaccess.flashmob-saulgau.de/RDWeb",
 	GatewayExternalFqdn: "gateway.flashmob-saulgau.de",
 	RDBrokerDNSInternalName: "rdsbroker",
 	RDBrokerDNSInternalZone: "flashmob-saulgau.de",
