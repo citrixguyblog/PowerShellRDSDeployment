@@ -41,7 +41,7 @@ function Test-PsRemoting {
 
 
 # Thanks @xenappblog.com for the Transcript Log idea
-$configpath= "C:\_scripts\config.json"
+$configpath= "C:\rds\config.json"
 $StartDate = (Get-Date) 
 $Vendor = "Microsoft"
 $Product = "Remote Desktop Farm"
@@ -254,8 +254,8 @@ Write-Verbose "Configured RDSBroker DNS-Record"  -Verbose
 
 #Change RDPublishedName
 #https://gallery.technet.microsoft.com/Change-published-FQDN-for-2a029b80
-Invoke-WebRequest -Uri "https://gallery.technet.microsoft.com/Change-published-FQDN-for-2a029b80/file/103829/2/Set-RDPublishedName.ps1" -OutFile "c:\_scripts\Set-RDPublishedName.ps1"
-Copy-Item "c:\_scripts\Set-RDPublishedName.ps1" -Destination "\\$($config.ConnectionBroker01)\c$"
+Invoke-WebRequest -Uri "https://gallery.technet.microsoft.com/Change-published-FQDN-for-2a029b80/file/103829/2/Set-RDPublishedName.ps1" -OutFile "c:\rds\Set-RDPublishedName.ps1"
+Copy-Item "c:\rds\Set-RDPublishedName.ps1" -Destination "\\$($config.ConnectionBroker01)\c$"
 Invoke-Command -ComputerName $config.ConnectionBroker01 -ArgumentList $config.RDBrokerDNSInternalName, $config.RDBrokerDNSInternalZone -ScriptBlock {
     $RDBrokerDNSInternalName = $args[0]
     $RDBrokerDNSInternalZone = $args[1]
@@ -306,16 +306,16 @@ if($config.HADeployment -like "Yes"){
     Write-Verbose "Configured WebAccess DNS-Record"  -Verbose
 
     # Download SQL Native Client
-    try {Invoke-WebRequest -Uri "https://download.microsoft.com/download/8/7/2/872BCECA-C849-4B40-8EBE-21D48CDF1456/ENU/x64/sqlncli.msi" -OutFile "c:\_scripts\sqlncli.msi"} catch {(Read-Host "Last change :-), copy sqlncli.msi to the brokers!. 'Press enter to continue'")}
-    if (Test-Path c:\_scripts\sqlncli.msi) {
+    try {Invoke-WebRequest -Uri "https://download.microsoft.com/download/8/7/2/872BCECA-C849-4B40-8EBE-21D48CDF1456/ENU/x64/sqlncli.msi" -OutFile "c:\rds\sqlncli.msi"} catch {(Read-Host "Last change :-), copy sqlncli.msi to the brokers!. 'Press enter to continue'")}
+    if (Test-Path c:\rds\sqlncli.msi) {
         Write-Verbose "Downloaded SQL Native Client" -Verbose
     } Else {
         Write-Warning "Couldnt Download SQL Native Client"
         break
-    } #end Test-Path c:\_scripts\sqlncli.msi
+    } #end Test-Path c:\rds\sqlncli.msi
 
     #Install SQLNativeClient on ConnectionBroker01
-    Copy-Item "c:\_scripts\sqlncli.msi" -Destination "\\$($config.ConnectionBroker01)\c$"
+    Copy-Item "c:\rds\sqlncli.msi" -Destination "\\$($config.ConnectionBroker01)\c$"
     Invoke-Command -ComputerName $config.ConnectionBroker01 -ArgumentList $config.ConnectionBroker01 -ScriptBlock {
         $ConnectionBroker01 = $args[0]
         $install = Start-Process "msiexec.exe" -ArgumentList "/i C:\sqlncli.msi", "/qn", "IACCEPTSQLNCLILICENSETERMS=YES", "/log C:\sql.log" -PassThru -Wait 
@@ -330,7 +330,7 @@ if($config.HADeployment -like "Yes"){
     }
 
     #Install SQLNativeClient on ConnectionBroker02
-    Copy-Item "c:\_scripts\sqlncli.msi" -Destination "\\$($config.ConnectionBroker02)\c$"
+    Copy-Item "c:\rds\sqlncli.msi" -Destination "\\$($config.ConnectionBroker02)\c$"
     Invoke-Command -ComputerName $config.ConnectionBroker02 -ArgumentList $config.ConnectionBroker02 -ScriptBlock {
         $ConnectionBroker02 = $args[0]
         $install = Start-Process "msiexec.exe" -ArgumentList "/i C:\sqlncli.msi", "/qn", "IACCEPTSQLNCLILICENSETERMS=YES", "/log C:\sql.log" -PassThru -Wait 
@@ -408,10 +408,10 @@ if($config.HADeployment -like "Yes"){
     # Create same Machine Key for RDWeb Services
     # https://docs.microsoft.com/en-us/windows-server/remote/remote-desktop-services/rds-rdweb-gateway-ha
     # https://gallery.technet.microsoft.com/Get-and-Set-the-machineKeys-9a1e7b77
-    Invoke-WebRequest -Uri "https://gallery.technet.microsoft.com/Get-and-Set-the-machineKeys-9a1e7b77/file/122500/1/Configure-MachineKeys.ps1" -OutFile "c:\_scripts\Configure-MachineKeys.ps1"
-    if (Test-Path c:\_scripts\Configure-MachineKeys.ps1){
+    Invoke-WebRequest -Uri "https://gallery.technet.microsoft.com/Get-and-Set-the-machineKeys-9a1e7b77/file/122500/1/Configure-MachineKeys.ps1" -OutFile "c:\rds\Configure-MachineKeys.ps1"
+    if (Test-Path c:\rds\Configure-MachineKeys.ps1){
         Write-Verbose "Downloaded Configure-MachineKeys Script" -Verbose
-        c:\_scripts\Configure-MachineKeys.ps1 -ComputerName $config.WebAccessServer01, $config.WebAccessServer02 -Mode Write
+        c:\rds\Configure-MachineKeys.ps1 -ComputerName $config.WebAccessServer01, $config.WebAccessServer02 -Mode Write
         Write-Verbose "Configured same Machine Key for RDWeb Servers"
     } Else {
         Write-Warning "Couldnt download Configure-MachineKeys Script"
