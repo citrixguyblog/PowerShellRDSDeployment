@@ -350,8 +350,8 @@ if($config.HADeployment -like "Yes"){
     Invoke-Command -ComputerName $config.SQLServer -ArgumentList $config.SQLServer, $config.DomainNetbios -ScriptBlock {
         $SQLserver = $args[0]
         $NetBios = $args[1]
-        Import-Module SQLPS
-        set-location SQLSERVER:
+
+        [void][System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.SMO')
         $server = new-Object Microsoft.SqlServer.Management.Smo.Server("$SQLserver")
         $SqlUser = New-Object -TypeName Microsoft.SqlServer.Management.Smo.Login ($server,"$NetBios\RDS_Connection_Brokers")
         $SqlUser.LoginType='WindowsUser'
